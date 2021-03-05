@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -38,6 +39,11 @@ public class MainActivity extends AppCompatActivity {
         hostButton = findViewById(R.id.hostButton);
         myIP = findViewById(R.id.myIP);
 
+        pingButton.setOnClickListener(this);
+        hostButton.setOnClickListener(this);
+
+
+
 
         new Thread(
                 () -> {
@@ -59,5 +65,35 @@ public class MainActivity extends AppCompatActivity {
                 }
         ).start();
 
+    }
+
+    public void onClick(View v) {
+
+        switch (v.getId()) {
+
+            case R.id.pingButton:
+
+                ip = num1.getText().toString() + "." + num2.getText().toString() + "." + num3.getText().toString() + "." + num4.getText().toString();
+
+                Intent intent = new Intent(this, Recibido.class);
+                intent.putExtra("Ip", ip);
+                startActivity(intent);
+
+                break;
+
+            case R.id.botonbuscarH:
+
+                Intent intent1 = new Intent(this, IpRecibido.class);
+                startActivity(intent1);
+
+                break;
+
+
+        }
+
+    }
+
+    public static String formatIpAddress(int ip) {
+        return String.format(Locale.US, "%d.%d.%d.%d", (ip & 0xff), (ip >> 8 & 0xff), (ip >> 16 & 0xff), (ip >> 24 & 0xff));
     }
 }
