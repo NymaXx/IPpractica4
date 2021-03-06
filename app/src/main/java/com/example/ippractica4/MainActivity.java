@@ -9,6 +9,7 @@ import android.text.format.Formatter;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import java.io.IOException;
@@ -19,10 +20,10 @@ import java.util.Locale;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
 
-    private TextView num1;
-    private TextView num2;
-    private TextView num3;
-    private TextView num4;
+    private EditText num1;
+    private EditText num2;
+    private EditText num3;
+    private EditText num4;
     private Button pingButton;
     private Button hostButton;
     private TextView myIP;
@@ -37,8 +38,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //poder hacerse ping a si mismo de manera facil y conveniente
 
         num1 = findViewById(R.id.num1);
-        num2 = findViewById(R.id.num2);
-        num3 = findViewById(R.id.num3);
+        num2 = findViewById(R.id.num3);
+        num3 = findViewById(R.id.num4);
         num4 = findViewById(R.id.num4);
         pingButton = findViewById(R.id.pingButton);
         hostButton = findViewById(R.id.hostButton);
@@ -48,9 +49,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         hostButton.setOnClickListener(this);
 
 
+        WifiManager wm = (WifiManager)getApplicationContext().getSystemService(WIFI_SERVICE);
+        myIP.setText(Formatter.formatIpAddress(wm.getConnectionInfo().getIpAddress()));
 
-
-        new Thread(
+        /*new Thread(
                 () -> {
                     try {
                         String ip = "127.0.0.1"; //autoreferencia
@@ -58,9 +60,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         //con esto estoy haciendo 5 pings
                         for(int i=0 ; i<5 ; i++){
                             boolean conectado = inet.isReachable(1000);
+
                             Log.e(">>>", "conectado:" +conectado);
                         }
-
 
                     } catch (UnknownHostException e) {
                         e.printStackTrace();
@@ -68,7 +70,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         e.printStackTrace();
                     }
                 }
-        ).start();
+        ).start();*/
 
     }
 
@@ -81,6 +83,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 ipp = num1.getText().toString() + "." + num2.getText().toString() + "." + num3.getText().toString() + "." + num4.getText().toString();
 
                 Intent pingIntent = new Intent(this, PingActivity.class);
+                pingIntent.putExtra("ipToPing", ipp);
                 startActivity(pingIntent);
 
                 break;
@@ -98,6 +101,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public static String formatIpAddress(int ip) {
-        return String.format(Locale.US, "%d.%d.%d.%d", (ip & 0xff), (ip >> 8 & 0xff), (ip >> 16 & 0xff), (ip >> 24 & 0xff));
+        return String.format(Locale.US, "%d.%d.%d.%d",
+                (ip & 0xff), (ip >> 8 & 0xff), (ip >> 16 & 0xff), (ip >> 24 & 0xff));
     }
 }
