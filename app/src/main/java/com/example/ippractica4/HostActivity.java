@@ -17,7 +17,6 @@ public class HostActivity extends AppCompatActivity {
 
     private TextView hostText;
     private Button hostBack;
-    private String receiveIp;
     private int ip;
 
     @Override
@@ -36,8 +35,41 @@ public class HostActivity extends AppCompatActivity {
 
 
         new Thread(
+                () -> {
+                    //192.168.18.34
+                    //255.255.255.0
+
+                    String base = "192.168.18.";
+                    for(int i = 1 ; i < 255 ; i++) {
+                        String ipH = base + i;
+                        try {
+                            InetAddress inet = InetAddress.getByName(ipH);
+                            boolean conected = inet.isReachable(1000);
+                            if(conected) {
+                                runOnUiThread(
+                                        () -> {
+                                            hostText.setText(hostText.getText().toString()
+                                                    + ipH + " " +"\n");
+                                        }
+                                );
+
+                            }
+                        } catch (UnknownHostException e) {
+                            e.printStackTrace();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+
+                }).start();
+
+
+
+        /*new Thread(
 
                 () -> {
+                    ip=0;
                     while (ip < 255) {
                         String finalData = Integer.toString(ip);
                         try {
@@ -62,7 +94,7 @@ public class HostActivity extends AppCompatActivity {
                         }
                     }
                 }
-        ).start();
+        ).start();*/
 
     }
 

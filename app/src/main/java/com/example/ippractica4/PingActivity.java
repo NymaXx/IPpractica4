@@ -39,7 +39,7 @@ public class PingActivity extends AppCompatActivity {
                         int p = 0;
                         while (p<5){
                             InetAddress inetAddress = InetAddress.getByName(Ip);
-                            boolean isReachable = inetAddress.isReachable(5000);
+                            boolean isReachable = inetAddress.isReachable(1000);
                             Thread.sleep(2000);
 
                             if (isReachable) {
