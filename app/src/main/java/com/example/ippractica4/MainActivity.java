@@ -2,7 +2,10 @@ package com.example.ippractica4;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
+import android.text.format.Formatter;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -11,8 +14,9 @@ import android.widget.TextView;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.Locale;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
 
     private TextView num1;
@@ -22,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
     private Button pingButton;
     private Button hostButton;
     private TextView myIP;
+    String ipp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,18 +78,17 @@ public class MainActivity extends AppCompatActivity {
 
             case R.id.pingButton:
 
-                ip = num1.getText().toString() + "." + num2.getText().toString() + "." + num3.getText().toString() + "." + num4.getText().toString();
+                ipp = num1.getText().toString() + "." + num2.getText().toString() + "." + num3.getText().toString() + "." + num4.getText().toString();
 
-                Intent intent = new Intent(this, Recibido.class);
-                intent.putExtra("Ip", ip);
-                startActivity(intent);
+                Intent pingIntent = new Intent(this, PingActivity.class);
+                startActivity(pingIntent);
 
                 break;
 
-            case R.id.botonbuscarH:
+            case R.id.hostButton:
 
-                Intent intent1 = new Intent(this, IpRecibido.class);
-                startActivity(intent1);
+                Intent hostIntent = new Intent(this, HostActivity.class );
+                startActivity(hostIntent);
 
                 break;
 
