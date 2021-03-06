@@ -29,36 +29,34 @@ public class PingActivity extends AppCompatActivity {
                 }
         );
 
-
-        String result;
-        String Ip = getIntent().getExtras().getString("ipToPing");
-
+        //String Ip = getIntent().getExtras().getString("ipToPing");
         new Thread(
-                () ->{
+                () -> {
                     try {
-                        int p = 0;
-                        while (p<5){
-                            InetAddress inetAddress = InetAddress.getByName(Ip);
-                            boolean isReachable = inetAddress.isReachable(1000);
+                        String ip = getIntent().getExtras().getString("ipToPing");
+                        InetAddress inet = InetAddress.getByName(ip);
+                        for(int i=0 ; i<5 ; i++){
+                            boolean conected = inet.isReachable(1000);
                             Thread.sleep(2000);
 
-                            if (isReachable) {
-
+                            if(conected){
                                 runOnUiThread(
-                                        () -> {
-                                            textPing.setText(textPing.getText().toString() + "Recibido\n");
+                                        ()->{
+                                            textPing.setText(textPing.getText().toString()
+                                                    + "Recibido"+"\n");
                                         }
                                 );
-                            } else {
-
+                            }else{
                                 runOnUiThread(
-                                        () -> {
-                                            textPing.setText(textPing.getText().toString() + "Perdido \n");
+                                        ()->{
+                                            textPing.setText(textPing.getText().toString()
+                                                    + "Perdido" +"\n");
                                         }
                                 );
                             }
-                            p++;
+
                         }
+
                     } catch (UnknownHostException e) {
                         e.printStackTrace();
                     } catch (IOException e) {
@@ -68,6 +66,9 @@ public class PingActivity extends AppCompatActivity {
                     }
                 }
         ).start();
+
+
+
 
     }
 
